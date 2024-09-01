@@ -1,0 +1,129 @@
+
+1.
+SELECT *
+FROM student;
+
+2.
+SELECT c_name, c_type
+FROM club;
+
+3.
+SELECT *
+FROM cevent
+WHERE budget BETWEEN 2000 AND 5000
+ORDER BY event_start_date;
+
+4.
+SELECT ce.event_name, ce.budget, cm.responsability
+FROM cevent ce
+JOIN club_events cle ON ce.event_name = cle.event_name
+JOIN club_member cm ON cle.club_name = cm.club_name
+WHERE YEAR(ce.event_start_date) = 2021 AND cm.responsability = 'president';
+
+5.
+SELECT COUNT(*) AS total_members
+FROM club_member
+WHERE start_date >= '2020-01-01';
+
+6.
+SELECT SUM(budget) AS total_budget
+FROM cevent
+WHERE YEAR(event_start_date) > 2010;
+
+7.
+SELECT c.c_name, c.c_type, COUNT(cm.member_id) AS total_members
+FROM club c
+LEFT JOIN club_member cm ON c.c_name = cm.club_name
+GROUP BY c.c_name, c.c_type
+ORDER BY c.c_type;
+
+8.
+SELECT COUNT(*) AS num_events
+FROM cevent
+WHERE budget = (SELECT MAX(budget) FROM cevent);
+
+9.
+SELECT *
+FROM cevent
+WHERE budget > (
+  SELECT MAX(budget)
+  FROM cevent
+  WHERE YEAR(event_start_date) = 2021
+);
+
+10.
+SELECT s.*, cm.*
+FROM student s
+LEFT JOIN club_member cm ON s.s_num = cm.student_num
+ORDER BY s.s_name DESC;
+
+11.
+SELECT ce.event_name, c.committee_creation_date, c.committee_dissolution_date, ce.budget, SUM(t.amount) AS total_expenses
+FROM cevent ce
+LEFT JOIN committee c ON ce.event_name = c.event_name
+LEFT JOIN task t ON ce.event_name = t.event_name
+WHERE YEAR(ce.event_start_date) = 2021
+GROUP BY ce.event_name, c.committee_creation_date, c.committee_dissolution_date, ce.budget;
+
+12.
+SELECT c.c_name, c.c_type, c.description, s.s_name AS president_name, s.class AS president_class, s.s_level AS president_level, s.s_num AS president_student_number
+FROM club c
+LEFT JOIN club_member cm ON c.c_name = cm.club_name AND cm.responsability = 'president'
+LEFT JOIN student s ON cm.student_num = s.s_num;
+
+13.
+SELECT c.c_name AS club_name, ar.report_status
+FROM club c
+LEFT JOIN activity_report ar ON c.c_name = ar.club_name;
+
+14.
+SELECT nr.id_report, nr.member_id, cm.responsability, cm.start_date, cm.end_date
+FROM reports_not_signed_yet nr
+JOIN club_member cm ON nr.member_id = cm.member_id
+JOIN activity_report ar ON nr.id_report = ar.id_report
+WHERE ar.report_status = 'pending signatures';
+
+15.
+SELECT s.s_num, s.s_name, cm.club_name, COALESCE(cm.responsability, 'Member') AS position
+FROM student s
+JOIN club_member cm ON s.s_num = cm.student_num
+GROUP BY s.s_num, s.s_name, cm.club_name
+HAVING COUNT(cm.club_name) > 1;
+
+16.
+SELECT t.task_description, t.amount AS price, cm.responsability AS responsible_name
+FROM task t
+JOIN committee_composition cc ON t.task_description = cc.task_description
+JOIN club_member cm ON cc.member_id = cm.member_id
+ORDER BY t.amount DESC
+LIMIT 10;
+
+17.
+SELECT ce.event_name, cev.club_name, cc.member_id, cc.temporar_position
+FROM cevent ce
+JOIN club_events cev ON ce.event_name = cev.event_name
+JOIN committee_composition cc ON ce.event_name = cc.event_name
+GROUP BY ce.event_name, cev.club_name, cc.member_id, cc.temporar_position
+HAVING COUNT(DISTINCT cev.club_name) > 1;
+
+18.
+SELECT c.c_name AS club_name, GROUP_CONCAT(a.award_source) AS awards
+FROM club c
+LEFT JOIN wined_awards wa ON c.c_name = wa.club_name
+LEFT JOIN award a ON wa.award_id = a.award_id
+GROUP BY c.c_name;
+
+19.
+SELECT c.c_name AS club_name
+FROM club c
+LEFT JOIN club_member cm ON c.c_name = cm.club_name
+LEFT JOIN student s ON cm.student_num = s.s_num
+WHERE s.s_name NOT IN ('ALLAM', 'ASSAF') OR s.s_name IS NULL;
+
+20.
+SELECT cm.member_id
+FROM club_member cm
+JOIN club c ON cm.club_name = c.c_name
+WHERE c.c_type = 'cultural'
+GROUP BY cm.member_id
+HAVING COUNT(DISTINCT c.c_name) = (SELECT COUNT(*) FROM club WHERE c_type = 'cultural');

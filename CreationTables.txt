@@ -1,0 +1,118 @@
+CREATE TABLE Club (
+    ClubID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    CreationDate DATE,
+    Type VARCHAR(255),
+    Description TEXT,
+    ActivityReportStatus VARCHAR(255)
+);
+
+CREATE TABLE Member (
+    MemberID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    StudentNumber VARCHAR(255),
+    Gender VARCHAR(255),
+    Class VARCHAR(255),
+    Level VARCHAR(255),
+    DateOfBirth DATE
+);
+
+CREATE TABLE Responsibility (
+    ResponsibilityID INT PRIMARY KEY,
+    Role VARCHAR(255),
+    StartDate DATE,
+    EndDate DATE
+);
+
+CREATE TABLE Event (
+    EventID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    StartDate DATE,
+    EndDate DATE,
+    StartTime TIME,
+    EndTime TIME,
+    Type VARCHAR(255),
+    Budget DECIMAL(10, 2)
+);
+
+CREATE TABLE Committee (
+    CommitteeID INT PRIMARY KEY,
+    CreationDate DATE,
+    DissolutionDate DATE
+);
+
+CREATE TABLE Task (
+    TaskID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    Amount DECIMAL(10, 2)
+);
+
+CREATE TABLE ActivityReport (
+    ReportID INT PRIMARY KEY,
+    Status VARCHAR(255),
+    LastModifiedDate DATE
+);
+
+CREATE TABLE Award (
+    AwardID INT PRIMARY KEY,
+    Source VARCHAR(255)
+);
+
+CREATE TABLE Sanction (
+    SanctionID INT PRIMARY KEY,
+    Description TEXT
+);
+
+CREATE TABLE ClubMember (
+    ClubID INT,
+    MemberID INT,
+    PRIMARY KEY (ClubID, MemberID),
+    FOREIGN KEY (ClubID) REFERENCES Club(ClubID),
+    FOREIGN KEY (MemberID) REFERENCES Member(MemberID)
+);
+
+CREATE TABLE MemberResponsibility (
+    MemberID INT,
+    ResponsibilityID INT,
+    PRIMARY KEY (MemberID, ResponsibilityID),
+    FOREIGN KEY (MemberID) REFERENCES Member(MemberID),
+    FOREIGN KEY (ResponsibilityID) REFERENCES Responsibility(ResponsibilityID)
+);
+
+CREATE TABLE ClubEvent (
+    ClubID INT,
+    EventID INT,
+    PRIMARY KEY (ClubID, EventID),
+    FOREIGN KEY (ClubID) REFERENCES Club(ClubID),
+    FOREIGN KEY (EventID) REFERENCES Event(EventID)
+);
+
+CREATE TABLE EventCommittee (
+    EventID INT,
+    CommitteeID INT,
+    PRIMARY KEY (EventID, CommitteeID),
+    FOREIGN KEY (EventID) REFERENCES Event(EventID),
+    FOREIGN KEY (CommitteeID) REFERENCES Committee(CommitteeID)
+);
+
+CREATE TABLE CommitteeMember (
+    CommitteeID INT,
+    MemberID INT,
+    PRIMARY KEY (CommitteeID, MemberID),
+    FOREIGN KEY (CommitteeID) REFERENCES Committee(CommitteeID),
+    FOREIGN KEY (MemberID) REFERENCES Member(MemberID)
+);
+
+CREATE TABLE CommitteeTask (
+    CommitteeID INT,
+    TaskID INT,
+    PRIMARY KEY (CommitteeID, TaskID),
+    FOREIGN KEY (CommitteeID) REFERENCES Committee(CommitteeID),
+    FOREIGN KEY (TaskID) REFERENCES Task(TaskID)
+);
+
+CREATE TABLE TaskMember (
+    TaskID INT PRIMARY KEY,
+    MemberID INT,
+    FOREIGN KEY (TaskID) REFERENCES Task(TaskID),
+    FOREIGN KEY

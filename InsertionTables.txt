@@ -1,0 +1,94 @@
+INSERT INTO Club (ClubID, Name, CreationDate, Type, Description, ActivityReportStatus)
+VALUES
+    (1, 'Sports Club', '2022-01-01', 'Sports', 'Club for sports enthusiasts', 'missing'),
+    (2, 'Music Club', '2022-02-01', 'Cultural', 'Club for music lovers', 'missing'),
+    (3, 'Coding Club', '2022-03-01', 'Technical', 'Club for coding enthusiasts', 'missing');
+
+INSERT INTO Member (MemberID, Name, StudentNumber, Gender, Class, Level, DateOfBirth)
+VALUES
+    (1, 'John Smith', '20220001', 'Male', 'A', '1st Year', '2003-05-10'),
+    (2, 'Emma Johnson', '20220002', 'Female', 'B', '2nd Year', '2002-09-15'),
+    (3, 'Michael Williams', '20220003', 'Male', 'A', '1st Year', '2003-02-25');
+
+INSERT INTO Responsibility (ResponsibilityID, Role, StartDate, EndDate)
+VALUES
+    (1, 'President', '2022-01-01', '2023-01-01'),
+    (2, 'Treasurer', '2022-01-01', '2023-01-01'),
+    (3, 'Secretary', '2022-01-01', '2023-01-01');
+
+INSERT INTO Event (EventID, Name, StartDate, EndDate, StartTime, EndTime, Type, Budget)
+VALUES
+    (1, 'Sports Tournament', '2022-05-01', '2022-05-03', '09:00:00', '18:00:00', 'Tournament', 1000),
+    (2, 'Music Concert', '2022-06-15', '2022-06-15', '20:00:00', '23:00:00', 'Concert', 500),
+    (3, 'Coding Workshop', '2022-07-10', '2022-07-12', '14:00:00', '18:00:00', 'Workshop', 800);
+
+INSERT INTO Committee (CommitteeID, CreationDate, DissolutionDate)
+VALUES
+    (1, '2022-01-01', '2022-12-31'),
+    (2, '2022-01-01', '2022-12-31');
+
+INSERT INTO Task (TaskID, Name, Amount)
+VALUES
+    (1, 'Event Planning', 200),
+    (2, 'Sponsorship Management', 150),
+    (3, 'Budget Tracking', 100);
+
+INSERT INTO ActivityReport (ReportID, Status, LastModifiedDate)
+VALUES
+    (1, 'missing', '2022-12-31'),
+    (2, 'pending signatures', '2022-12-31');
+
+INSERT INTO Award (AwardID, Source)
+VALUES
+    (1, 'School'),
+    (2, 'Company');
+
+INSERT INTO Sanction (SanctionID, Description)
+VALUES
+(1, 'Warning for non-compliance'),
+(2, 'Temporary suspension of club activities');
+
+INSERT INTO ClubMember (ClubID, MemberID)
+VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(3, 3);
+
+INSERT INTO MemberResponsibility (MemberID, ResponsibilityID)
+VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+INSERT INTO ClubEvent (ClubID, EventID)
+VALUES
+(1, 1),
+(2, 2),
+(3, 3);
+
+INSERT INTO EventCommittee (EventID, CommitteeID)
+VALUES
+(1, 1),
+(2, 2),
+(3, 2);
+
+INSERT INTO CommitteeMember (CommitteeID, MemberID)
+VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(2, 3);
+
+INSERT INTO CommitteeTask (CommitteeID, TaskID)
+VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(2, 3);
+
+INSERT INTO TaskMember (TaskID, MemberID)
+VALUES
+(1, 1),
+(2, 2),
+(3, 3);
